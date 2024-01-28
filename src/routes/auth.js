@@ -55,7 +55,7 @@ try {
     }
     const isMatch = await bcryptjs.compare(password, user.password);
     if(!isMatch){
-        return res.status(400).json({msg: "Incorrect Password."});
+        return res.status(400).json({status: false, msg: "Incorrect Password."});
     }
     const token = jwt.sign({id: user._id}, "passwordKey");
     res.json({"status": true, token, ...user._doc});
