@@ -24,6 +24,11 @@ app.use(booksRouter);
 
 const DB = "mongodb+srv://lmsramgarhengineering:Anurag6022@cluster0.oa029sm.mongodb.net/eduventuredb";
 
+app.get("/", function(req, res){
+  const response = { statuscode: res.statusCode, message: "API Works!!!"};
+  res.json(response);
+});
+
 mongoose.connect(DB).then(() => {
     console.log("MongoDB Connection Successfull");
 }).catch((err) => {
