@@ -18,7 +18,7 @@ noticeRouter.post("/api/addNotice", auth, async function(req, res){
         const formattedDate = `${year}-${month}-${day}`;
 
         let noticeModel = new NoticeModel({
-            _id: studentId,
+            _id: currentTimestamp,
             noticeNo,
             noticeTitle,
             noticeUrl,
