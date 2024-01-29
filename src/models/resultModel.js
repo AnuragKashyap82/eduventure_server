@@ -15,6 +15,11 @@ const resultSchema = mongoose.Schema({
         type: String,
         trim: true,
     },
+    semester: {
+        required: true,
+        type: String,
+        trim: true,
+    },
     dateTime: {
         required: true,
         type: String,
