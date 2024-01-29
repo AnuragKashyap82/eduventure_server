@@ -79,7 +79,7 @@ authRouter.get("/api/getMyProfile", auth, async (req, res) => {
 
         res.json({
             "status": true,
-            user
+            user,
         });
 
     } catch (e) {
