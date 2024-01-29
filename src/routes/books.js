@@ -194,6 +194,26 @@ booksRouter.post("/api/issueBook", auth, async function(req, res) {
     }
 });
 
+ ///Get All My IssuedBooks
+ booksRouter.get('/api/getMyIssuedBooks', auth, async (req, res)=> {
+    try {
+
+        // Get the user by ID
+        const userFound = await User.findById(req.user);
+        if (!userFound) {
+            return res.status(400).json({
+                "status": false,
+                msg: "User not found"
+            });
+        }
+
+        const issueBooks = await IssueBookModel.find({studentId: userFound.studentId});
+        res.json({"status": true, issueBooks});
+    } catch (error) {
+        res.status(500).json({"status": false,error: error.message});
+    }
+});
+
 //Update status to Issued
 booksRouter.put("/api/updateToIssued", auth, async function(req, res) {
     try {
