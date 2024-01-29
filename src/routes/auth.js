@@ -94,7 +94,7 @@ authRouter.get("/api/getMyProfile", auth, async (req, res) => {
 authRouter.put("/api/updateProfile",auth, async (req, res) => {
     try {
     
-        const { name, branch, completeAddress, dob, photoUrl, regNo, seatType, semester, session, token } = req.body;
+        const { name, branch, completeAddress, dob, photoUrl, regNo, seatType, semester, session, token, isVerified } = req.body;
 
         // Check if the user exists
         const user = await User.findById(req.user);
@@ -112,6 +112,7 @@ authRouter.put("/api/updateProfile",auth, async (req, res) => {
         user.semester = semester || user.semester;
         user.session = session || user.session;
         user.token = token || user.token;
+        user.isVerified = isVerified || user.isVerified;
 
         // Save the updated user
         await user.save();
