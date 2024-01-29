@@ -6,7 +6,7 @@ const materialRouter = express.Router();
 //Add Material
 materialRouter.post("/api/addMaterial", auth, async function(req, res){
     try {
-        const {branch, materialUrl, semester, subName, subTopic, studentId} = req.body;
+        const {branch, materialUrl, semester, subName, subTopic} = req.body;
 
         const currentTimestamp = Date.now();
         const today = new Date();
@@ -18,7 +18,7 @@ materialRouter.post("/api/addMaterial", auth, async function(req, res){
         const formattedDate = `${year}-${month}-${day}`;
 
         let materialModel = new MaterialModel({
-            _id: studentId,
+            _id: currentTimestamp,
             branch,
             materialUrl,
             semester,
