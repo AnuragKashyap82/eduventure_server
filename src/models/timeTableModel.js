@@ -35,6 +35,11 @@ const timeTableSchema = mongoose.Schema({
         type: String,
         trim: true,
     },
+    facultyId: {
+        required: true,
+        type: String,
+        trim: true,
+    },
     semester: {
         required: true,
         type: String,
