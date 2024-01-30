@@ -347,7 +347,7 @@ classroomRouter.post("/api/classPostMsg", auth, async function(req, res) {
 
 
 ///GetAll Classroom Message
-classroomRouter.get("/api/getClassroomAllMessage", auth, async (req, res) => {
+classroomRouter.post("/api/getClassroomAllMessage", auth, async (req, res) => {
     try {
         const { classCode } = req.body;
         const classroom = await ClassroomModel.findById(classCode);
