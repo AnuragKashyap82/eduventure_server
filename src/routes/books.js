@@ -106,7 +106,7 @@ booksRouter.put("/api/decrementBookQty", auth, async function(req, res) {
         }
 
         // Increment the book quantity by 1
-        existingBook.bookQty = 1;
+        existingBook.bookQty -= 1;
         const updatedBook = await existingBook.save();
 
         res.json({ "status": true, updatedBook });
