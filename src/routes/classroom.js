@@ -10,16 +10,20 @@ const classroomRouter = express.Router();
 //Create Classroom
 classroomRouter.post("/api/createClass", auth, async function(req, res){
     try {
-        const {subjectName, className, name, studentId} = req.body;
+        const {subjectName, className, name} = req.body;
 
         const currentTimestamp = Date.now();
-        const today = new Date();
 
-        const year = today.getFullYear();
-        // Months are zero-based, so we add 1 to get the correct month
-        const month = (today.getMonth() + 1).toString().padStart(2, '0');
-        const day = today.getDate().toString().padStart(2, '0');
-        const formattedDate = `${year}-${month}-${day}`;
+        // Get the user by ID
+        const user = await User.findById(req.user);
+
+        // Check if the user is found
+        if (!user) {
+            return res.status(400).json({
+                "status": false,
+                msg: "User not found"
+            });
+        }
 
         let classroomModel = new ClassroomModel({
             _id: currentTimestamp,
@@ -27,7 +31,7 @@ classroomRouter.post("/api/createClass", auth, async function(req, res){
             className,
             name,
             classCode: currentTimestamp,
-            studentId,
+            studentId: user.studentId,
             
         });
         classroomModel = await classroomModel.save();
