@@ -10,7 +10,7 @@ const classroomRouter = express.Router();
 //Create Classroom
 classroomRouter.post("/api/createClass", auth, async function(req, res){
     try {
-        const {subjectName, className, name} = req.body;
+        const {subjectName, className} = req.body;
 
         const currentTimestamp = Date.now();
 
@@ -29,7 +29,7 @@ classroomRouter.post("/api/createClass", auth, async function(req, res){
             _id: currentTimestamp,
             subjectName,
             className,
-            name,
+            name: user.name,
             classCode: currentTimestamp,
             studentId: user.studentId,
             
