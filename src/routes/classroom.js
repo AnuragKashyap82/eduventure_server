@@ -350,6 +350,11 @@ classroomRouter.post("/api/classPostMsg", auth, async function(req, res) {
 classroomRouter.post("/api/getClassroomAllMessage", auth, async (req, res) => {
     try {
         const { classCode } = req.body;
+
+        if (!classCode) {
+            return res.status(400).json({ "status": false, error: 'ClassCode is required' });
+        }
+
         const classroom = await ClassroomModel.findById(classCode);
 
         // Check if user is found
