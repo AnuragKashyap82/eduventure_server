@@ -124,7 +124,7 @@ authRouter.put("/api/updateProfile",auth, async (req, res) => {
 });
 
 //Get profile Data by studentId
-booksRouter.post("/api/getUserData", auth, async (req, res) => {
+authRouter.post("/api/getUserData", auth, async (req, res) => {
     try {
       const { studentId } = req.body;
   
