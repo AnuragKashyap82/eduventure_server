@@ -752,7 +752,7 @@ classroomRouter.post("/api/checkIsSubmitted", auth, async function(req, res) {
 
 
 //Update Submitted Assignment ObtainedMarks
-classroomRouter.put("/api/updateObtainedMarks", auth, async function(req, res) {
+classroomRouter.post("/api/updateObtainedMarks", auth, async function(req, res) {
     try {
         const { classCode, assignmentId, marksObtained, studentId } = req.body;
 
