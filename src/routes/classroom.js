@@ -437,7 +437,7 @@ classroomRouter.post("/api/addAssignment", auth, async function(req, res) {
 });
 
 ///GetAll Classroom Assignment
-classroomRouter.get("/api/getAllAssignment", auth, async (req, res) => {
+classroomRouter.post("/api/getAllAssignment", auth, async (req, res) => {
     try {
         const { classCode } = req.body;
         const classroom = await ClassroomModel.findById(classCode);
