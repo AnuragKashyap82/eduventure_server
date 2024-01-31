@@ -626,7 +626,7 @@ classroomRouter.put("/api/updateSubmissionUrl", auth, async function(req, res) {
 });
 
 ///GetAll Classroom Assignment
-classroomRouter.get("/api/getAllAssSubmittedName", auth, async (req, res) => {
+classroomRouter.post("/api/getAllAssSubmittedName", auth, async (req, res) => {
     try {
         const { classCode, assignmentId } = req.body;
         const classroomFound = await ClassroomModel.findById(classCode);
