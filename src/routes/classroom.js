@@ -731,14 +731,15 @@ classroomRouter.post("/api/checkIsSubmitted", auth, async function(req, res) {
                 "status": false,
                 msg: "No Submission Found for this student!"
             });
-        }else{
-            return res.status(400).json({
+        } else {
+            // If submission is found, return submission details
+            const submissionDetails = assignmentFound.submission[submissionIndex];
+            return res.status(200).json({
                 "status": true,
-                msg: "Assigment Submitted"
+                msg: "Assignment Submitted",
+                submission: submissionDetails
             });
         }
-
-        
 
     } catch (error) {
         console.error('Error:', error);
@@ -748,6 +749,7 @@ classroomRouter.post("/api/checkIsSubmitted", auth, async function(req, res) {
         });
     }
 });
+
 
 //Update Submitted Assignment ObtainedMarks
 classroomRouter.put("/api/updateObtainedMarks", auth, async function(req, res) {
