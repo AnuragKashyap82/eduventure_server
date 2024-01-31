@@ -587,7 +587,7 @@ classroomRouter.post("/api/addAssignmentSubmission", auth, async function(req, r
 
 
 //Update Submitted Assignment Url
-classroomRouter.put("/api/updateSubmissionUrl", auth, async function(req, res) {
+classroomRouter.post("/api/updateSubmissionUrl", auth, async function(req, res) {
     try {
         const { classCode, assignmentId, submissionUrl } = req.body;
 
