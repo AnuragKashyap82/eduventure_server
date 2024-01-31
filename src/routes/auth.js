@@ -123,5 +123,26 @@ authRouter.put("/api/updateProfile",auth, async (req, res) => {
     }
 });
 
+//Get profile Data by studentId
+booksRouter.post("/api/getUserData", auth, async (req, res) => {
+    try {
+      const { studentId } = req.body;
+  
+      if (!studentId) {
+        return res.status(400).json({ "status": false, error: 'studentId is required' });
+      }
+  
+      let student = await User.findOneAndDelete({ studentId });
+  
+      if (!student) {
+        return res.status(404).json({ "status": false, error: 'User not found' });
+      }
+  
+      res.json({"status": true, student});
+    } catch (e) {
+      res.status(500).json({ "status": false, error: e.message });
+    }
+  });
+
 
 module.exports = authRouter;
