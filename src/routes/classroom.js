@@ -394,6 +394,17 @@ classroomRouter.post("/api/addAssignment", auth, async function(req, res) {
                 msg: "Classroom does not exist!"
             });
         }
+
+        // Get the user by ID
+        const userFound = await User.findById(req.user);
+
+        // Check if the user is found
+        if (!userFound) {
+            return res.status(400).json({
+                "status": false,
+                msg: "User not found"
+            });
+        }
     
         const currentTimestamp = Date.now();
         const today = new Date();
@@ -413,7 +424,7 @@ classroomRouter.post("/api/addAssignment", auth, async function(req, res) {
             fullMarks,
             dateTime: formattedDate,
             assignmentUrl,
-            studentId: req.user,
+            studentId: userFound.student,
         });
         // Save the updated assignment
         await classroomFound.save();
@@ -479,6 +490,18 @@ classroomRouter.post("/api/addAssignmentSubmission", auth, async function(req, r
             });
         }
 
+         // Get the user by ID
+         const userFound = await User.findById(req.user);
+
+         // Check if the user is found
+         if (!userFound) {
+             return res.status(400).json({
+                 "status": false,
+                 msg: "User not found"
+             });
+         }
+        
+
         // Find the assignment with the given assignmentId in the classroom
         const assignmentfound = classroomFound.assignment.find(assignment => assignment._id == assignmentId);
         if (!assignmentfound) {
@@ -501,7 +524,7 @@ classroomRouter.post("/api/addAssignmentSubmission", auth, async function(req, r
                 fullMarks: assignmentfound.fullMarks,
                 dateTime: assignmentfound.dateTime,
                 submissionUrl,
-                studentId: req.user,
+                studentId: userFound.studentId,
             };
             await assignmentfound.submission.push(submission);
 
@@ -536,7 +559,7 @@ classroomRouter.post("/api/addAssignmentSubmission", auth, async function(req, r
             fullMarks: assignmentfound.fullMarks,
             dateTime: assignmentfound.dateTime,
             submissionUrl,
-            studentId: req.user,
+            studentId: userFound.studentId,
         };
 
         assignmentfound.submission.push(submission);
@@ -577,6 +600,17 @@ classroomRouter.put("/api/updateSubmissionUrl", auth, async function(req, res) {
             });
         }
 
+         // Get the user by ID
+         const userFound = await User.findById(req.user);
+
+         // Check if the user is found
+         if (!userFound) {
+             return res.status(400).json({
+                 "status": false,
+                 msg: "User not found"
+             });
+         }
+
         // Find the assignment with the given assignmentId in the classroom
         const assignmentIndex = classroomFound.assignment.findIndex(assignment => assignment._id == assignmentId);
         if (assignmentIndex === -1) {
@@ -589,7 +623,7 @@ classroomRouter.put("/api/updateSubmissionUrl", auth, async function(req, res) {
         const assignmentFound = classroomFound.assignment[assignmentIndex];
 
         // Find the submission with the matching studentId (req.user)
-        const submissionIndex = assignmentFound.submission.findIndex(sub => sub.studentId == req.user);
+        const submissionIndex = assignmentFound.submission.findIndex(sub => sub.studentId == userFound.studentId);
         if (submissionIndex === -1) {
             return res.status(400).json({
                 "status": false,
@@ -610,7 +644,7 @@ classroomRouter.put("/api/updateSubmissionUrl", auth, async function(req, res) {
             "status": true,
             msg: "Submission URL updated successfully",
             updatedSubmission: {
-                _id: req.user,
+                _id: userFound.studentId,
                 assignmentId,
                 submissionUrl: submissionUrl
             }
@@ -712,7 +746,7 @@ classroomRouter.put("/api/updateObtainedMarks", auth, async function(req, res) {
             "status": true,
             msg: "Submission URL updated successfully",
             updatedSubmission: {
-                _id: req.user,
+                _id: studentId,
                 assignmentId,
                 marksObtained: marksObtained
             }
