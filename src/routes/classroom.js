@@ -551,7 +551,7 @@ classroomRouter.post("/api/addAssignmentSubmission", auth, async function(req, r
         }
 
         const submission = {
-            _id: req.user,
+            _id: userFound.studentId,
             assignmentId,
             assignmentName: assignmentfound.assignmentName,
             classCode,
