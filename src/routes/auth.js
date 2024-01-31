@@ -132,7 +132,7 @@ authRouter.post("/api/getUserData", auth, async (req, res) => {
         return res.status(400).json({ "status": false, error: 'studentId is required' });
       }
   
-      let student = await User.findOneAndDelete({ studentId });
+      let student = await User.findOne({ studentId });
   
       if (!student) {
         return res.status(404).json({ "status": false, error: 'User not found' });
