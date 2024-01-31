@@ -699,6 +699,56 @@ classroomRouter.post("/api/getAllAssSubmittedName", auth, async (req, res) => {
     }
 });
 
+//Check is Assignment Submitted
+classroomRouter.post("/api/checkIsSubmitted", auth, async function(req, res) {
+    try {
+        const { classCode, assignmentId, studentId } = req.body;
+
+        // Check if the classroom with the given classCode exists
+        const classroomFound = await ClassroomModel.findOne({ classCode });
+        if (!classroomFound) {
+            return res.status(400).json({
+                "status": false,
+                msg: "Classroom does not exist!"
+            });
+        }
+
+        // Find the assignment with the given assignmentId in the classroom
+        const assignmentIndex = classroomFound.assignment.findIndex(assignment => assignment._id == assignmentId);
+        if (assignmentIndex === -1) {
+            return res.status(400).json({
+                "status": false,
+                msg: "No Assignment Found!"
+            });
+        }
+
+        const assignmentFound = classroomFound.assignment[assignmentIndex];
+
+        // Find the submission with the matching studentId (req.user)
+        const submissionIndex = assignmentFound.submission.findIndex(sub => sub.studentId == studentId);
+        if (submissionIndex === -1) {
+            return res.status(400).json({
+                "status": false,
+                msg: "No Submission Found for this student!"
+            });
+        }else{
+            return res.status(400).json({
+                "status": true,
+                msg: "Assigment Submitted"
+            });
+        }
+
+        
+
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({
+            "status": false,
+            msg: error.message
+        });
+    }
+});
+
 //Update Submitted Assignment ObtainedMarks
 classroomRouter.put("/api/updateObtainedMarks", auth, async function(req, res) {
     try {
