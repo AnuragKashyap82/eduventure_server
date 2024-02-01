@@ -943,12 +943,14 @@ classroomRouter.post("/api/checkClassCreated", auth, async function(req, res) {
         if (existingAttendance) {
             return res.status(400).json({
                 "status": true,
-                msg: "Attendance for today already exists"
+                msg: "Attendance for today already exists",
+                date: formattedDate
             });
         }else{
             return res.status(400).json({
                 "status": false,
-                msg: "Attendance does not exists for today"
+                msg: "Attendance does not exists for today",
+                date: formattedDate
             });
         }
 
