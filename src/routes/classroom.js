@@ -960,7 +960,7 @@ classroomRouter.post("/api/checkClassCreated", auth, async function(req, res) {
     }
 });
 
-//Add All Students in claa to Tidays Addendence as Present
+//Add All Students in claa to Todays Addendence as Present
 classroomRouter.post("/api/addAttendenceStudent", auth, async function(req, res) {
     try {
         const { classCode, date } = req.body;
@@ -1061,7 +1061,7 @@ classroomRouter.get("/api/getAttendenceByDate", auth, async (req, res) => {
 });
 
  //Update Attendence Present or Absent
-classroomRouter.put("/api/updateAttendence", auth, async function(req, res) {
+classroomRouter.post("/api/updateAttendence", auth, async function(req, res) {
     try {
         const { classCode, date, studentId } = req.body;
 
