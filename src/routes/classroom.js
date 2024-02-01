@@ -202,7 +202,7 @@ classroomRouter.post("/api/joinClassStudent", auth, async function(req, res) {
 });
 
 ///Get All Students
-classroomRouter.get("/api/getAllStudents", auth, async (req, res) => {
+classroomRouter.post("/api/getAllStudents", auth, async (req, res) => {
     try {
         const { classCode } = req.body;
 
