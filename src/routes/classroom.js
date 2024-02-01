@@ -1011,8 +1011,42 @@ classroomRouter.post("/api/addAttendenceStudent", auth, async function(req, res)
     }
 });
 
-///GetAll Classroom Assignment
-classroomRouter.get("/api/getAttendenceByDate", auth, async (req, res) => {
+///Get All attendence
+classroomRouter.post("/api/getAllAttendence", auth, async (req, res) => {
+    try {
+        const { classCode } = req.body;
+
+        if (!classCode) {
+            return res.status(400).json({ "status": false, error: 'classCode is required' });
+        }
+
+        const classroomFound = await ClassroomModel.findById(classCode);
+
+        // Check if user is found
+        if (!classroomFound) {
+            return res.status(400).json({
+                "status": false,
+                msg: "Classroom not found"
+            });
+        }
+
+        const allAttendence = classroomFound.attendence;
+
+        res.json({
+            "status": true,
+            allAttendence
+        });
+
+    } catch (e) {
+        res.status(500).json({
+            "status": false,
+            error: e.message
+        });
+    }
+});
+
+///Get attendence by date
+classroomRouter.post("/api/getAttendenceByDate", auth, async (req, res) => {
     try {
         const { classCode, date } = req.body;
 
