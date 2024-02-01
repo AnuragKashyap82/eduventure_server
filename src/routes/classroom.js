@@ -893,6 +893,73 @@ classroomRouter.post("/api/createTodayAttendence", auth, async function(req, res
     }
 });
 
+//Check Todays Attendence already created
+classroomRouter.post("/api/checkClassCreated", auth, async function(req, res) {
+    try {
+        const { classCode } = req.body;
+
+        // Check if the classroom with the given classCode exists
+        const classroomFound = await ClassroomModel.findOne({ classCode });
+        if (!classroomFound) {
+            return res.status(400).json({
+                "status": false,
+                msg: "Classroom does not exist!"
+            });
+        }
+
+        // Get the user by ID
+        const userFound = await User.findById(req.user);
+
+        // Check if the user is found
+        if (!userFound) {
+            return res.status(400).json({
+                "status": false,
+                msg: "User not found"
+            });
+        }
+
+        const today = new Date();
+
+        const year = today.getFullYear();
+        const monthIndex = today.getMonth();
+        const day = today.getDate();
+
+        // Array of month names
+        const monthNames = [
+            'January', 'February', 'March', 'April',
+            'May', 'June', 'July', 'August',
+            'September', 'October', 'November', 'December'
+        ];
+
+        // Get the month name using the month index
+        const month = monthNames[monthIndex];
+
+        // Formatted date in "DD-Month-YYYY" format
+        const formattedDate = `${day}-${month}-${year}`;
+
+        // Check if attendance for today already exists
+        const existingAttendance = classroomFound.attendence.find(entry => entry._id === formattedDate);
+
+        if (existingAttendance) {
+            return res.status(400).json({
+                "status": true,
+                msg: "Attendance for today already exists"
+            });
+        }else{
+            return res.status(400).json({
+                "status": false,
+                msg: "Attendance does not exists for today"
+            });
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            "status": false,
+            msg: error.message
+        });
+    }
+});
+
 //Add All Students in claa to Tidays Addendence as Present
 classroomRouter.post("/api/addAttendenceStudent", auth, async function(req, res) {
     try {
