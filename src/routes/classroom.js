@@ -1062,7 +1062,7 @@ classroomRouter.get("/api/getAttendenceByDate", auth, async (req, res) => {
     }
 });
 
- //Update Attendence Present or Absent
+//Update Attendence Present or Absent
 classroomRouter.post("/api/updateAttendence", auth, async function(req, res) {
     try {
         const { classCode, date, studentId } = req.body;
@@ -1128,6 +1128,77 @@ classroomRouter.post("/api/updateAttendence", auth, async function(req, res) {
                 res.json({
                     "status": true,
                     attendenceFound
+                });
+            }
+        
+        
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({
+            "status": false,
+            msg: error.message
+        });
+    }
+});
+
+//Get student Attendence
+classroomRouter.post("/api/getAbsentOrPresent", auth, async function(req, res) {
+    try {
+        const { classCode, date, studentId } = req.body;
+
+        if(!classCode){
+            return res.status(400).json({ "status": false, error: 'classCode is required' });
+        }
+
+        // Check if the classroom with the given classCode exists
+        const classroomFound = await ClassroomModel.findOne({ classCode });
+        if (!classroomFound) {
+            return res.status(400).json({
+                "status": false,
+                msg: "Classroom does not exist!"
+            });
+        }
+
+        if(!date){
+            return res.status(400).json({ "status": false, error: 'date is required' });
+        }
+        if(!studentId){
+            return res.status(400).json({ "status": false, error: 'studentId is required' });
+        }
+
+        // Find the assignment with the given assignmentId in the classroom
+        const attendenceIndex = classroomFound.attendence.findIndex(attendence => attendence._id == date);
+        if (attendenceIndex === -1) {
+            return res.status(400).json({
+                "status": false,
+                msg: "No Attendence Found!"
+            });
+        }
+
+        const attendenceFound = classroomFound.attendence[attendenceIndex];
+
+        // Find the submission with the matching studentId (req.user)
+        const studentIndex = attendenceFound.student.findIndex(student => student.studentId == studentId);
+        if (studentIndex === -1) {
+            return res.status(400).json({
+                "status": false,
+                msg: "No Student with this Studentid  Found!"
+            });
+        }
+        
+            if(attendenceFound.student[studentIndex].attendance === "absent"){
+                  
+                res.json({
+                    "status": true,
+                    "attendence": "absent"
+                });
+             
+            }else{
+            
+            
+                res.json({
+                    "status": true,
+                    "attendence": "present"
                 });
             }
         
