@@ -1140,7 +1140,6 @@ classroomRouter.post("/api/updateAttendence", auth, async function(req, res) {
                 msg: "No Student with this Studentid  Found!"
             });
         }
-        
             if(attendenceFound.student[studentIndex].attendance === "absent"){
                   attendenceFound.student[studentIndex].attendance = "present";
                   classroomFound.attendence[attendenceIndex] = attendenceFound
